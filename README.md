@@ -6,8 +6,4 @@ To install everything, run `install.sh`.
 
 `demo.sh` will run the demo, step by step, pausing for input after each command.
 
-To remove the whole setup, run `teardown.sh`.
-
-Known issues:
-
- * The Wordpress pod gets stuck creating for some reason.
+To remove the whole setup, including backups, run `teardown.sh`. Otherwise, run `kind delete cluster` to just delete the cluster.
