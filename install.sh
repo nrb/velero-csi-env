@@ -10,9 +10,16 @@ kubectl apply -f deploy/kubernetes/snapshot-controller/
 kubectl apply -f deploy/kubernetes/csi-snapshotter/rbac-csi-snapshotter.yaml
 kubectl apply -f deploy/kubernetes/csi-snapshotter/setup-csi-snapshotter.yaml
 
-# Create the relevant storage class and volumesnapshotclass
 cd $HOME/projects/csi-driver-host-path
+
+# Build the most recent version of the host path plugin into a container and load it into KinD nodes.
+REGISTRY_NAME=quay.io/nrb make container
+kind load docker-image quay.io/nrb/hostpathplugin:latest all
+
+# Deploy the hostpath components
 ./deploy/kubernetes-1.17/deploy-hostpath.sh
+
+# Create the relevant storage class and volumesnapshotclass
 kubectl apply -f ./examples/csi-storageclass.yaml
 kubectl apply -f ./deploy/kubernetes-1.17/snapshotter/csi-hostpath-snapshotclass.yaml
 
